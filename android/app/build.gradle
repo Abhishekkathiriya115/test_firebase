@@ -40,9 +40,10 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-
+    dexOptions {
+        preDexLibraries false
+    }
     defaultConfig {
-        applicationId "com.example.testing_pro"
         minSdkVersion 21
         targetSdkVersion 34
         multiDexEnabled true
@@ -51,22 +52,30 @@ android {
         flavorDimensions "default"
         productFlavors {
             dev {
+                applicationId "com.example.testing_pro.dev"
                 dimension "default"
-                applicationIdSuffix ".dev"
                 versionNameSuffix "-dev"
             }
-            prod {
+            dev2 {
+                applicationId "com.example.testing_pro.dev2"
                 dimension "default"
-                applicationIdSuffix ".prod"
+                versionNameSuffix "-dev2"
+            }
+            prod {
+                applicationId "com.example.testing_pro.prod"
+                dimension "default"
                 versionNameSuffix "-prod"
             }
         }
         sourceSets {
             dev {
-                res.srcDirs = ['src/dev/res']
+                res.srcDirs = ['dev/res']
+            }
+            dev2 {
+                res.srcDirs = ['dev2/res']
             }
             prod {
-                res.srcDirs = ['src/prod/res']
+                res.srcDirs = ['prod/res']
             }
         }
     }
@@ -103,3 +112,5 @@ apply plugin: 'com.google.gms.google-services'
 googleServices { disableVersionCheck = true }
 
 preBuild.dependsOn 'processDevDebugGoogleServices'
+preBuild.dependsOn 'processDev2DebugGoogleServices'
+preBuild.dependsOn 'processProdDebugGoogleServices'
